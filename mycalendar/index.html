@@ -1,13 +1,36 @@
 <!DOCTYPE html>
 <html lang="ja">
-  <head>
+
+<head>
     <meta charset="UTF-8">
-    <title>Calendar</title>
-  </head>
-  <body>
-    <h1>
-      Calendar
-    </h1>
-    <script type="module" src="index.js"></script>
-  </body>
+    <title>My Calendar</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <span>
+            <button id="previous month" type="button">先月</button>
+            <b><span id="year"></span>年<span id="month"></span>月</b>
+            <button id="next month" type="button">来月</button>
+        </span>
+
+        <div id="calendar">
+            <table>
+                <tr>
+                    <th>日</th>
+                    <th>月</th>
+                    <th>火</th>
+                    <th>水</th>
+                    <th>木</th>
+                    <th>金</th>
+                    <th class="saturday">土</th>
+                </tr>
+                <div id="calendarContent"></div>
+            </table>
+        </div>
+    </div><!-- container -->
+    <script src="index.js"></script>
+</body>
+
 </html>
