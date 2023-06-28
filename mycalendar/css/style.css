@@ -13,10 +13,16 @@ tr {
 }
 
 th:first-child,
+td:first-child,
 .holiday {
     color: red;
 }
 
-th:last-child {
+th:last-child,
+td:last-child {
     color: blue;
+}
+
+.prevNextMonth {
+    opacity: 0.5;
 }

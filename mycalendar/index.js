@@ -1,31 +1,63 @@
-class Calendar {
-    static days = ['日', '月', '火', '水', '木', '金', '土'];
 
-    constructor(current = new Date()){
-        this.current = current;
-    }
+/**
+ * カレンダーの曜日行より下の行を表すHTMLの文字列を返す関数です。
+ * @param {Number} year 年
+ * @param {Number} month 月
+ * @returns {String} カレンダーの内容が書かれた<tr>要素群の文字列。
+ */
+function createCalendarHTML(year, month){
+    let calendarHtml = '';
+    const firstDate = new Date(year, month, 1);
 
-    _createCalendarHTML(year, month){
-        let calendarHtml;
-        const firstDate = new Date(year, month, 1);
-        const lastDate = new Date(year, month + 1, 0);
+    // カレンダーの1行1列のDateオブジェクトを生成
+    const dateCount = new Date(firstDate.getFullYear(), firstDate.getMonth(), 1 - firstDate.getDay());
 
-        while(1 /*(仮)*/) {
-            calendarHtml += '<tr>';
+    while(true) {
+        calendarHtml += '<tr>';
+
+        // --- 1行分の文字列生成 ---
+        for(let i = 0; i < 7; i++){
+            if(dateCount.getMonth() === month) {
+                calendarHtml += '<td>'
+            } else {
+                calendarHtml += '<td class="prevNextMonth">'
+            }
+            calendarHtml += dateCount.getDate() + '</td>';
+            dateCount.setDate(dateCount.getDate() + 1);
         }
+        // -----------------------
 
-        return calendarHtml;
+        calendarHtml += '</tr>';
+        if(dateCount.getMonth() !== month) {
+            break;
+        }
     }
-
-    showCalendar(){
-        // 年月をHTMLに書き込み
-        document.getElementById('year').textContent = this.current.getFullYear();
-        document.getElementById('month').textContent = this.current.getMonth() + 1;
-        // 日(カレンダー本体)をHTMLに書き込み
-        // document.querySelector('calendarContent').innerHTML = this._createCalendarHTML();
-    }
+    return calendarHtml;
 }
 
-let calendar = new Calendar();
-calendar._createCalendarHTML(2023, 5);
-calendar.showCalendar();
+/**
+ * dateが存在する月のカレンダーをHTMLで表示する。
+ * @param {Date} date 表示したい月のDateオブジェクト
+ */
+function showCalendar(date){
+    // 年月をHTMLに書き込み
+    document.getElementById('year').textContent = date.getFullYear();
+    document.getElementById('month').textContent = date.getMonth() + 1;
+    // 日(カレンダー本体)をHTMLに書き込み
+    document.getElementById('calendarContent').innerHTML = createCalendarHTML(date.getFullYear(), date.getMonth());
+}
+
+const prevMonthBtn = document.getElementById('prevMonthBtn');
+prevMonthBtn.addEventListener('click', function(){
+    date.setMonth(date.getMonth() - 1);
+    showCalendar(date);
+})
+
+const nextMonthBtn = document.getElementById('nextMonthBtn');
+nextMonthBtn.addEventListener('click', function(){
+    date.setMonth(date.getMonth() + 1);
+    showCalendar(date);
+})
+
+const date = new Date();
+showCalendar(date);

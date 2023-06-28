@@ -10,13 +10,14 @@
 <body>
     <div class="container">
         <span>
-            <button id="previous month" type="button">先月</button>
+            <button id="prevMonthBtn" type="button">前の月</button>
             <b><span id="year"></span>年<span id="month"></span>月</b>
-            <button id="next month" type="button">来月</button>
+            <button id="nextMonthBtn" type="button">次の月</button>
         </span>
 
-        <div id="calendar">
-            <table>
+
+        <table class="calendar">
+            <thead>
                 <tr>
                     <th>日</th>
                     <th>月</th>
@@ -24,11 +25,12 @@
                     <th>水</th>
                     <th>木</th>
                     <th>金</th>
-                    <th class="saturday">土</th>
+                    <th>土</th>
                 </tr>
-                <div id="calendarContent"></div>
-            </table>
-        </div>
+            </thead>
+            <tbody id="calendarContent"></tbody>
+        </table>
+
     </div><!-- container -->
     <script src="index.js"></script>
 </body>
