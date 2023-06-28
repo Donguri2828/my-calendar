@@ -7,27 +7,25 @@
  */
 function createCalendarHTML(year, month){
     let calendarHtml = '';
-    const firstDate = new Date(year, month, 1);
-
+    const today = new Date();
     // カレンダーの1行1列のDateオブジェクトを生成
-    const dateCount = new Date(firstDate.getFullYear(), firstDate.getMonth(), 1 - firstDate.getDay());
+    const dateCount = new Date(year, month, 1-(new Date(year, month, 1).getDay()));
 
     while(true) {
         calendarHtml += '<tr>';
-
-        // --- 1行分の文字列生成 ---
         for(let i = 0; i < 7; i++){
-            if(dateCount.getMonth() === month) {
-                calendarHtml += '<td>'
-            } else {
-                calendarHtml += '<td class="prevNextMonth">'
+            calendarHtml += '<td class="'
+            if(dateCount.getMonth() !== month) {
+                calendarHtml += 'prevNextMonth'
             }
-            calendarHtml += dateCount.getDate() + '</td>';
+            if(dateCount.toLocaleDateString() === today.toLocaleDateString()) {
+                calendarHtml += ' today'
+            }
+            calendarHtml += '">' + dateCount.getDate() + '</td>';
             dateCount.setDate(dateCount.getDate() + 1);
         }
-        // -----------------------
-
         calendarHtml += '</tr>';
+
         if(dateCount.getMonth() !== month) {
             break;
         }
