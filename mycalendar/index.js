@@ -1,36 +1,47 @@
 
 /**
- * カレンダーの曜日行より下の行を表すHTMLの文字列を返す関数です。
+ * カレンダーの曜日列(<thead>要素)の下に挿入する日付行列(<tbody>要素)を返す関数です。
  * @param {Number} year 年
  * @param {Number} month 月
- * @returns {String} カレンダーの内容が書かれた<tr>要素群の文字列。
+ * @returns {HTMLTableSectionElement} カレンダーの内容が書かれた<tbody>要素。
  */
-function createCalendarHTML(year, month){
-    let calendarHtml = '';
+function createCalendarTbodyElem(year, month){
+    const tbody = document.createElement('tbody');
     const today = new Date();
     // カレンダーの1行1列のDateオブジェクトを生成
     const dateCount = new Date(year, month, 1-(new Date(year, month, 1).getDay()));
 
     while(true) {
-        calendarHtml += '<tr>';
+        // <tr>要素を生成
+        const tr = document.createElement('tr');
+
         for(let i = 0; i < 7; i++){
-            calendarHtml += '<td class="'
+            // <td>要素を生成
+            const td = document.createElement('td');
+            // class属性の追加
+            let attr = '';
             if(dateCount.getMonth() !== month) {
-                calendarHtml += 'prevNextMonth'
+                attr += 'prevNextMonth';
             }
             if(dateCount.toLocaleDateString() === today.toLocaleDateString()) {
-                calendarHtml += ' today'
+                attr += ' today';
             }
-            calendarHtml += '">' + dateCount.getDate() + '</td>';
+            td.setAttribute('class', attr);
+            // 日付の追加
+            td.textContent = dateCount.getDate();
+            // <tr>要素の配下に<td>要素を追加
+            tr.append(td);
+            // dateCountの日付カウントアップ
             dateCount.setDate(dateCount.getDate() + 1);
         }
-        calendarHtml += '</tr>';
+        // <tbody>要素の配下に<tr>要素を追加
+        tbody.append(tr);
 
         if(dateCount.getMonth() !== month) {
             break;
         }
     }
-    return calendarHtml;
+    return tbody;
 }
 
 /**
@@ -41,8 +52,9 @@ function showCalendar(date){
     // 年月をHTMLに書き込み
     document.getElementById('year').textContent = date.getFullYear();
     document.getElementById('month').textContent = date.getMonth() + 1;
-    // 日(カレンダー本体)をHTMLに書き込み
-    document.getElementById('calendarContent').innerHTML = createCalendarHTML(date.getFullYear(), date.getMonth());
+    // <tbody>要素をHTMLに追加
+    calendar = document.querySelector('table.calendar');
+    calendar.replaceChild(createCalendarTbodyElem(date.getFullYear(), date.getMonth()), calendar.lastChild);
 }
 
 const prevMonthBtn = document.getElementById('prevMonthBtn');
