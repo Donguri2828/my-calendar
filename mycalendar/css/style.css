@@ -7,14 +7,12 @@ td {
     padding: 3px;
 }
 
-
 tr {
     margin: 3px;
 }
 
 th:first-child,
-td:first-child,
-.holiday {
+td:first-child {
     color: red;
 }
 
@@ -29,4 +27,8 @@ td:last-child {
 
 .today {
     background-color: rgba(255, 0, 0, 0.500);
+}
+
+.holiday {
+    color:green;
 }

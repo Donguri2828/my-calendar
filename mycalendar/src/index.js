@@ -1,4 +1,3 @@
-
 /**
  * カレンダーの曜日列(<thead>要素)の下に挿入する日付行列(<tbody>要素)を返す関数です。
  * @param {Number} year 年
@@ -8,8 +7,10 @@
 function createCalendarTbodyElem(year, month){
     const tbody = document.createElement('tbody');
     const today = new Date();
-    // カレンダーの1行1列のDateオブジェクトを生成
-    const dateCount = new Date(year, month, 1-(new Date(year, month, 1).getDay()));
+    // 祝日の配列を取得
+    const holidays = holiday_jp.between(new Date(year, month-1, 1), new Date(year, month+1, 31));
+    // カレンダーの1行1列の日に該当するDateオブジェクトを生成
+    const dateCount = new Date(year, month, 1-(new Date(year, month, 1).getDay()), 9, 0, 0);
 
     while(true) {
         // <tr>要素を生成
@@ -27,8 +28,19 @@ function createCalendarTbodyElem(year, month){
                 attr += ' today';
             }
             td.setAttribute('class', attr);
-            // 日付の追加
-            td.textContent = dateCount.getDate();
+            // 日付(<strong>要素)の追加
+            const strong = document.createElement('strong');
+            strong.textContent = dateCount.getDate();
+            td.append(strong);
+            // 祝日の追加
+            holidays.forEach(obj => {
+                if(obj.date.getTime() === dateCount.getTime()) {
+                    const span = document.createElement('span');
+                    span.setAttribute('class', 'holiday');
+                    span.textContent = obj.name;
+                    td.append(span);
+                }
+            });
             // <tr>要素の配下に<td>要素を追加
             tr.append(td);
             // dateCountの日付カウントアップ
@@ -71,3 +83,6 @@ nextMonthBtn.addEventListener('click', function(){
 
 const date = new Date();
 showCalendar(date);
+
+const holidays = holiday_jp.between(new Date('2010-05-01'), new Date('2010-05-31'));
+console.log(holidays); // 敬老の日
