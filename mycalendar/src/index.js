@@ -1,5 +1,5 @@
 /**
- * カレンダーの曜日列(<thead>要素)の下に挿入する日付行列(<tbody>要素)を返す関数です。
+ * カレンダーの曜日列(<thead>要素)の下に挿入する日付行列(<tbody>要素)を返す。
  * @param {Number} year 年
  * @param {Number} month 月
  * @returns {HTMLTableSectionElement} カレンダーの内容が書かれた<tbody>要素。
@@ -9,7 +9,7 @@ function createCalendarTbodyElem(year, month){
     const today = new Date();
     // 祝日の配列を取得
     const holidays = holiday_jp.between(new Date(year, month-1, 1), new Date(year, month+1, 31));
-    // カレンダーの1行1列の日に該当するDateオブジェクトを生成
+    // カレンダーの1行1列目の日に該当するDateオブジェクトを生成
     const dateCount = new Date(year, month, 1-(new Date(year, month, 1).getDay()), 9, 0, 0);
 
     while(true) {
@@ -19,7 +19,7 @@ function createCalendarTbodyElem(year, month){
         for(let i = 0; i < 7; i++){
             // <td>要素を生成
             const td = document.createElement('td');
-            // class属性の追加
+            // class属性の設定
             let attr = '';
             if(dateCount.getMonth() !== month) {
                 attr += 'text-black-50';
@@ -27,26 +27,28 @@ function createCalendarTbodyElem(year, month){
             if(dateCount.toLocaleDateString() === today.toLocaleDateString()) {
                 attr += ' table-danger';
             }
-            td.setAttribute('class', attr + ' vstack');
-            // 日付(<strong>要素)の追加
+            td.setAttribute('class', attr);
+
+            // 日付要素の追加
             const dateElem = document.createElement('div');
             dateElem.setAttribute('class', 'fw-bold')
             dateElem.textContent = dateCount.getDate();
             td.append(dateElem);
+
             // 祝日の追加
             const holidayElem = document.createElement('div');
+            // ライブラリから祝日を取得
             holidays.forEach(obj => {
                 if(obj.date.getTime() === dateCount.getTime()) {
-                    // const p = document.createElement('p');
                     holidayElem.setAttribute('class', 'holiday bg-success text-white');
                     holidayElem.textContent = obj.name;
-                    // td.append(p);
                 }
             });
             td.append(holidayElem);
+
             // <tr>要素の配下に<td>要素を追加
             tr.append(td);
-            // dateCountの日付カウントアップ
+            // dateCountの日付をカウントアップ
             dateCount.setDate(dateCount.getDate() + 1);
         }
         // <tbody>要素の配下に<tr>要素を追加
