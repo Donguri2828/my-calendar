@@ -1,0 +1,21 @@
+th:first-child,
+td:first-child {
+    color: red;
+}
+
+table {
+    table-layout: fixed;
+    overflow: visible;
+    min-height: 600px;
+}
+
+td {
+    vertical-align: top;
+    text-align: left;
+}
+
+.holiday {
+    font-size: 6px;
+    padding: 1px 2px;
+    border-radius: 2px;
+}
