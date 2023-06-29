@@ -22,25 +22,28 @@ function createCalendarTbodyElem(year, month){
             // class属性の追加
             let attr = '';
             if(dateCount.getMonth() !== month) {
-                attr += 'prevNextMonth';
+                attr += 'text-black-50';
             }
             if(dateCount.toLocaleDateString() === today.toLocaleDateString()) {
-                attr += ' today';
+                attr += ' table-danger';
             }
-            td.setAttribute('class', attr);
+            td.setAttribute('class', attr + ' vstack');
             // 日付(<strong>要素)の追加
-            const strong = document.createElement('strong');
-            strong.textContent = dateCount.getDate();
-            td.append(strong);
+            const dateElem = document.createElement('div');
+            dateElem.setAttribute('class', 'fw-bold')
+            dateElem.textContent = dateCount.getDate();
+            td.append(dateElem);
             // 祝日の追加
+            const holidayElem = document.createElement('div');
             holidays.forEach(obj => {
                 if(obj.date.getTime() === dateCount.getTime()) {
-                    const span = document.createElement('span');
-                    span.setAttribute('class', 'holiday');
-                    span.textContent = obj.name;
-                    td.append(span);
+                    // const p = document.createElement('p');
+                    holidayElem.setAttribute('class', 'holiday bg-success text-white');
+                    holidayElem.textContent = obj.name;
+                    // td.append(p);
                 }
             });
+            td.append(holidayElem);
             // <tr>要素の配下に<td>要素を追加
             tr.append(td);
             // dateCountの日付カウントアップ
@@ -83,6 +86,3 @@ nextMonthBtn.addEventListener('click', function(){
 
 const date = new Date();
 showCalendar(date);
-
-const holidays = holiday_jp.between(new Date('2010-05-01'), new Date('2010-05-31'));
-console.log(holidays); // 敬老の日
