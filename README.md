@@ -15,3 +15,4 @@
 * "holiday_jp-js". https://github.com/holiday-jp/holiday_jp-js
     * こちらの祝日ライブラリを使用。
 * "MDN Web Docs". https://developer.mozilla.org/ja/docs/Web
+
